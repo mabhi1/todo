@@ -1,27 +1,28 @@
 from django.http import JsonResponse
-from .models import TodoList, Item
+from .models import Item
+from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 import json
 
 
 @csrf_exempt
-def handle_todo(request, id):
-    if request.method == "GET":
-        ls = TodoList.objects.get(id=id)
+def handle_todo(request, username):
+    if request.method == "GET" and request.user.is_authenticated and request.user.username == username:
+        ls = User.objects.get(username=str(username))
         items = list(ls.item_set.all().values())
         for item in items:
-            item.pop("todolist_id")
-        data = {"name": ls.name, "id": id}
+            item.pop("user_id")
+        data = {"username": ls.username, "first_name": ls.first_name}
         data['items'] = items
         return JsonResponse(data)
 
-    elif request.method == "POST":
-        ls = TodoList.objects.get(id=id)
+    elif request.method == "POST" and request.user.is_authenticated and request.user.username == username:
+        ls = User.objects.get(username=username)
         item = json.loads(request.body)
         ls.item_set.create(text=item['text'], complete=False)
         return JsonResponse({"message": "Todo created successfully"})
 
-    elif request.method == "PUT":
+    elif request.method == "PUT" and request.user.is_authenticated and request.user.username == username:
         item_info = json.loads(request.body)
         item = Item.objects.get(id=item_info['id'])
         if 'text' in item_info:
@@ -31,7 +32,7 @@ def handle_todo(request, id):
         item.save()
         return JsonResponse({"message": "Todo updated successfully"})
 
-    elif request.method == "DELETE":
+    elif request.method == "DELETE" and request.user.is_authenticated and request.user.username == username:
         item_info = json.loads(request.body)
         item = Item.objects.get(id=item_info['id'])
         item.delete()

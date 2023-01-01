@@ -15,15 +15,15 @@ def get_todo(request, id):
         return JsonResponse({"message": "Resource not found"}, status=404)
 
 
-# @csrf_exempt
-# def create_todo(request, id):
-#     if request.method == "POST":
-#         ls = TodoList.objects.get(id=id)
-#         item = json.loads(request.body)
-#         ls.item_set.create(text=item['text'], complete=False)
-#         return JsonResponse({"message": "Todo created successfully"})
-#     else:
-#         return JsonResponse({"message": "Page not found"}, status=404)
+@csrf_exempt
+def create_todo(request, id):
+    if request.method == "POST":
+        ls = TodoList.objects.get(id=id)
+        item = json.loads(request.body)
+        ls.item_set.create(text=item['text'], complete=False)
+        return JsonResponse({"message": "Todo created successfully"})
+    else:
+        return JsonResponse({"message": "Page not found"}, status=404)
 
 
 # @csrf_exempt

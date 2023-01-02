@@ -20,6 +20,16 @@ def create_user(request):
         )
         newUser.save()
         return JsonResponse({"message": "User created successfully"})
+    # elif request.method == "GET" and request.user.is_authenticated:
+    #     ls = User.objects.get(username=request.user.username)
+    #     items = list(ls.item_set.all().values())
+    #     for item in items:
+    #         item.pop("user_id")
+    #     data = {"username": ls.username, "first_name": ls.first_name}
+    #     data['items'] = items
+    #     return JsonResponse(data)
+    elif request.method == "GET":
+        return JsonResponse({"message": "Hello"})
     else:
         return JsonResponse({"message": "Page not found"}, status=404)
 

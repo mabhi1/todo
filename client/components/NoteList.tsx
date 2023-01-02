@@ -1,8 +1,7 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+export default function NoteList() {
   let Notes = [
     {
       id: 1,
@@ -23,7 +22,7 @@ export default function HomeScreen() {
     { id: 13, text: "Hello World 3", complete: false },
   ];
   return (
-    <SafeAreaView className="h-screen justify-evenly pt-10">
+    <View className="h-screen justify-evenly pt-10">
       <Text className="text-3xl ml-5">Tasks</Text>
 
       <View className="flex-1">
@@ -61,6 +60,11 @@ export default function HomeScreen() {
           })}
         </ScrollView>
       </View>
-    </SafeAreaView>
+      <View>
+        <TouchableOpacity className="px-8 py-3 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500 mt-1 items-center">
+          <Text className="text-slate-50 text-lg">Add new task</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }

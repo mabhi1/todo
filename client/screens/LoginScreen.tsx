@@ -1,11 +1,35 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import axios from "axios";
 
 export default function LoginScreen({ navigation }: any) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const handleSubmit = async () => {
+    if (!username || username.trim().length == 0 || !password || password.trim().length == 0) {
+      Alert.alert("Message", "Please enter username and password to login", [{ text: "OK" }]);
+      return;
+    }
+    try {
+      const { data } = await axios.post("https://4d60-108-50-188-138.ngrok.io/user/login/", {
+        username: username,
+        password: password,
+      });
+      console.log(data);
+      Alert.alert("Message", "Login Successful", [{ text: "OK" }]);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "User", params: { username } }],
+      });
+    } catch (error: any) {
+      console.log(error);
+      Alert.alert("Error", error.response.data.message, [{ text: "OK" }]);
+    }
+  };
+
   return (
     <SafeAreaView className="justify-start items-center flex-1 gap-y-5">
       <View className="flex-row items-center">
@@ -40,7 +64,7 @@ export default function LoginScreen({ navigation }: any) {
           className="rounded border border-cyan-700 p-2 px-10 text-base shadow-sm shadow-cyan-100 bg-slate-50"
         />
       </View>
-      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500">
+      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500" onPress={handleSubmit}>
         <Text className="text-slate-50 text-base">Login</Text>
       </TouchableOpacity>
       {/* <TouchableOpacity onPress={() => navigation.navigate("Signup")}>

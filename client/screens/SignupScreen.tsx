@@ -1,7 +1,8 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import axios from "axios";
 
 export default function SignupScreen() {
   const [username, setUsername] = React.useState("");
@@ -9,6 +10,51 @@ export default function SignupScreen() {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
+
+  const handleSubmit = async () => {
+    if (
+      !username ||
+      username.trim().length == 0 ||
+      !password ||
+      password.trim().length == 0 ||
+      !firstName ||
+      firstName.trim().length == 0 ||
+      !lastName ||
+      lastName.trim().length == 0 ||
+      !email ||
+      email.trim().length == 0
+    ) {
+      Alert.alert("Message", "Please fill all the details to continue!", [{ text: "OK" }]);
+      return;
+    }
+    if (
+      !email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      Alert.alert("Message", "Invalid email. Please enter your email again", [{ text: "OK" }]);
+      return;
+    }
+    try {
+      const { data } = await axios.post("https://4d60-108-50-188-138.ngrok.io/user/", {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        username: username,
+      });
+      console.log(data);
+      Alert.alert("Success", data.message, [{ text: "OK" }]);
+      setUsername("");
+      setFirstName("");
+      setLastName("");
+      setPassword("");
+      setEmail("");
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      Alert.alert("Error", error.response.data.message, [{ text: "OK" }]);
+    }
+  };
   return (
     <SafeAreaView className="justify-start items-center flex-1 gap-y-5">
       <View className="flex-row items-center">
@@ -88,7 +134,7 @@ export default function SignupScreen() {
           className="rounded border border-cyan-700 p-2 px-10 text-base shadow-sm shadow-cyan-100 bg-slate-50"
         />
       </View>
-      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500">
+      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500" onPress={handleSubmit}>
         <Text className="text-slate-50 text-base">Sign up</Text>
       </TouchableOpacity>
       {/* <TouchableOpacity>

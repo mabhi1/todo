@@ -3,8 +3,12 @@ import HomeScreen from "../screens/HomeScreen";
 import { RootStackParamList } from "../types";
 import ProfileScreen from "../screens/ProfileScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import React from "react";
 
-export default function UserScreen() {
+export default function UserScreen({ route }: any) {
+  const { username } = route?.params;
+  console.log(username);
+
   const Tab = createBottomTabNavigator<RootStackParamList>();
 
   return (
@@ -24,7 +28,7 @@ export default function UserScreen() {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} initialParams={{ username: username }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );

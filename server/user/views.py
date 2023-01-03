@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 import json
+from django.core import serializers
 
 
 @csrf_exempt
@@ -20,16 +21,19 @@ def create_user(request):
         )
         newUser.save()
         return JsonResponse({"message": "User created successfully"})
-    # elif request.method == "GET" and request.user.is_authenticated:
-    #     ls = User.objects.get(username=request.user.username)
-    #     items = list(ls.item_set.all().values())
-    #     for item in items:
-    #         item.pop("user_id")
-    #     data = {"username": ls.username, "first_name": ls.first_name}
-    #     data['items'] = items
-    #     return JsonResponse(data)
-    elif request.method == "GET":
-        return JsonResponse({"message": "Hello"})
+    elif request.method == "GET" and request.user.is_authenticated:
+        ls = User.objects.get(username=request.user.username)
+        current_user = {
+            "username": ls.username,
+            "first_name": ls.first_name,
+            "last_name": ls.last_name,
+            "email": ls.email
+        }
+        items = list(ls.item_set.all().values())
+        for item in items:
+            item.pop("user_id")
+        current_user['items'] = [*items]
+        return JsonResponse({"username": ls.username, "data": current_user})
     else:
         return JsonResponse({"message": "Page not found"}, status=404)
 
@@ -44,7 +48,7 @@ def login_user(request):
             request, username=user_info['username'], password=user_info['password'])
         if user:
             login(request, user)
-            return JsonResponse({"message": "User logged in"})
+            return JsonResponse({"message": "User logged in", "username": user_info['username']})
         else:
             return JsonResponse({"message": "Invalid user"}, status=404)
     else:

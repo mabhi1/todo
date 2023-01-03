@@ -49,5 +49,6 @@ npm start
 
 ## Important
 
-Since React Native projects cannot directly communicate to local servers.
-Consider using ngrok to make a connection between client and server
+Since React Native projects cannot directly communicate to local servers.\
+Consider using ngrok to make a connection between client and server.\
+Replace your new ngrok url with the existing one in serverURL.ts file in the client folder.

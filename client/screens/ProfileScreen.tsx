@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
+import EditProfileModal from "../components/EditProfileModal";
+import EditPasswordModal from "../components/EditPasswordModal";
 
 type User = {
   first_name: String;
@@ -14,6 +16,8 @@ const text = "text-lg";
 
 export default function ProfileScreen({ navigation }: any) {
   const [userData, setUserData] = React.useState<User | null>(null);
+  const [editModal, setEditModal] = React.useState(false);
+  const [passwordModal, setPasswordModal] = React.useState(false);
 
   React.useEffect(() => {
     async function getData() {
@@ -56,15 +60,17 @@ export default function ProfileScreen({ navigation }: any) {
         </View>
       ) : (
         <View className="m-5">
+          <EditProfileModal editModal={editModal} setEditModal={setEditModal} user={userData} setUser={setUserData} />
+          <EditPasswordModal passwordModal={passwordModal} setPasswordModal={setPasswordModal} user={userData} />
           <Text className={text}>First Name : {userData.first_name}</Text>
           <Text className={text}>Last Name : {userData.last_name}</Text>
           <Text className={text}>Username : {userData.username}</Text>
           <Text className={text}>Email : {userData.email}</Text>
           <View className="mt-10 flex-row justify-evenly items-center">
-            <TouchableOpacity className="bg-cyan-600/70 p-1 px-3 rounded shadow-xl shadow-cyan-500">
+            <TouchableOpacity className="bg-cyan-600/70 p-1 px-3 rounded shadow-xl shadow-cyan-500" onPress={() => setEditModal(true)}>
               <Text className={text + " text-slate-50"}>Edit Profile</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-cyan-600/70 p-1 px-3 rounded shadow-xl shadow-cyan-500">
+            <TouchableOpacity className="bg-cyan-600/70 p-1 px-3 rounded shadow-xl shadow-cyan-500" onPress={() => setPasswordModal(true)}>
               <Text className={text + " text-slate-50"}>Change Password</Text>
             </TouchableOpacity>
           </View>

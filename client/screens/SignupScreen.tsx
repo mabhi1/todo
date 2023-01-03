@@ -10,8 +10,10 @@ export default function SignupScreen() {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [processing, setProcessing] = React.useState(false);
 
   const handleSubmit = async () => {
+    setProcessing(true);
     if (
       !username ||
       username.trim().length == 0 ||
@@ -54,6 +56,7 @@ export default function SignupScreen() {
       console.log(error.response.data.message);
       Alert.alert("Error", error.response.data.message, [{ text: "OK" }]);
     }
+    setProcessing(false);
   };
   return (
     <SafeAreaView className="justify-start items-center flex-1 gap-y-5">
@@ -134,7 +137,7 @@ export default function SignupScreen() {
           className="rounded border border-cyan-700 p-2 px-10 text-base shadow-sm shadow-cyan-100 bg-slate-50"
         />
       </View>
-      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500" onPress={handleSubmit}>
+      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500" disabled={processing} onPress={handleSubmit}>
         <Text className="text-slate-50 text-base">Sign up</Text>
       </TouchableOpacity>
       {/* <TouchableOpacity>

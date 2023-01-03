@@ -1,9 +1,7 @@
-import { View, Text, TextInput, Modal, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Modal, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 
 export default function EditTaskModal({ editModal, setEditModal, editTask, note }: any) {
-  console.log(note);
-
   const [task, setTask] = React.useState("");
   return (
     <Modal animationType={"slide"} transparent={true} visible={editModal}>
@@ -21,6 +19,10 @@ export default function EditTaskModal({ editModal, setEditModal, editTask, note 
           <TouchableOpacity
             className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500"
             onPress={() => {
+              if (!task || task.trim().length === 0) {
+                Alert.alert("Error", "Text cannot be empty", [{ text: "OK" }]);
+                return;
+              }
               editTask(note.id, "text", task);
               setTask("");
               setEditModal(false);

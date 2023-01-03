@@ -68,10 +68,14 @@ def edit_user(request, username):
     if request.method == "PUT" and request.user.is_authenticated and request.user.username == username:
         user = User.objects.get(username=username)
         user_info = json.loads(request.body)
+        if User.objects.filter(email=user_info['email']):
+            return JsonResponse({"message": "Email already taken"}, status=400)
         if "first_name" in user_info:
             user.first_name = user_info['first_name']
         if "last_name" in user_info:
             user.last_name = user_info['last_name']
+        if "email" in user_info:
+            user.email = user_info['email']
         if "password" in user_info:
             user.set_password(user_info['password'])
         user.save()

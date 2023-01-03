@@ -64,7 +64,7 @@ export default function HomeScreen({ route }: any) {
   };
 
   const handleDelete = async (id: any) => {
-    Alert.alert("alert", "Confirm to delete!", [
+    Alert.alert("Alert!", "Confirm to delete.", [
       {
         text: "Delete",
         onPress: async () => {

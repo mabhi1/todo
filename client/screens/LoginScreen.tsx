@@ -7,8 +7,10 @@ import axios from "axios";
 export default function LoginScreen({ navigation }: any) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [processing, setProcessing] = React.useState(false);
 
   const handleSubmit = async () => {
+    setProcessing(true);
     if (!username || username.trim().length == 0 || !password || password.trim().length == 0) {
       Alert.alert("Message", "Please enter username and password to login", [{ text: "OK" }]);
       return;
@@ -28,6 +30,7 @@ export default function LoginScreen({ navigation }: any) {
       console.log(error);
       Alert.alert("Error", error.response.data.message, [{ text: "OK" }]);
     }
+    setProcessing(false);
   };
 
   return (
@@ -64,7 +67,7 @@ export default function LoginScreen({ navigation }: any) {
           className="rounded border border-cyan-700 p-2 px-10 text-base shadow-sm shadow-cyan-100 bg-slate-50"
         />
       </View>
-      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500" onPress={handleSubmit}>
+      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500" disabled={processing} onPress={handleSubmit}>
         <Text className="text-slate-50 text-base">Login</Text>
       </TouchableOpacity>
       {/* <TouchableOpacity onPress={() => navigation.navigate("Signup")}>

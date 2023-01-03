@@ -10,6 +10,8 @@ from django.core import serializers
 def create_user(request):
     if request.method == "POST":
         user = json.loads(request.body)
+        user['email'] = user['email'].lower()
+        user['username'] = user['username'].lower()
         if User.objects.filter(email=user['email']) or User.objects.filter(username=user['username']):
             return JsonResponse({"message": "User already exist"}, status=400)
         newUser = User.objects.create_user(
@@ -44,6 +46,7 @@ def login_user(request):
         if request.user.is_authenticated:
             return JsonResponse({"message": "User already logged in"}, status=400)
         user_info = json.loads(request.body)
+        user_info['username'] = user_info['username'].lower()
         user = authenticate(
             request, username=user_info['username'], password=user_info['password'])
         if user:
@@ -68,7 +71,8 @@ def edit_user(request, username):
     if request.method == "PUT" and request.user.is_authenticated and request.user.username == username:
         user = User.objects.get(username=username)
         user_info = json.loads(request.body)
-        if User.objects.filter(email=user_info['email']):
+        user_info['email'] = user_info['email'].lower()
+        if user_info['email'] != user.email and User.objects.filter(email=user_info['email']):
             return JsonResponse({"message": "Email already taken"}, status=400)
         if "first_name" in user_info:
             user.first_name = user_info['first_name']

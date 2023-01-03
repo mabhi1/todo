@@ -73,7 +73,7 @@ export default function HomeScreen({ route }: any) {
             return todo.id !== id;
           });
           try {
-            await axios.delete(`${url}/${username}`, {
+            await axios.delete(`${url}/todo/${username}`, {
               data: {
                 id,
               },

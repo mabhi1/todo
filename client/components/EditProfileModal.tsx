@@ -22,10 +22,14 @@ export default function EditProfileModal({ editModal, setEditModal, user, setUse
       Alert.alert("Message", "Invalid email. Please enter your email again", [{ text: "OK" }]);
       return;
     }
+    if (user.first_name === firstName && user.last_name === lastName && user.email === email) {
+      setEditModal(false);
+      return;
+    }
     let updatedUser = { ...user };
     updatedUser.first_name = firstName;
     updatedUser.last_name = lastName;
-    updatedUser.email = email;
+    updatedUser.email = email.toLowerCase();
     try {
       await axios.put(`${url}/user/edit/${user.username}`, {
         first_name: firstName,

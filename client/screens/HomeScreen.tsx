@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import React, { Key } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
+import url from "../serverURL";
 import TaskModal from "../components/TaskModal";
 import Ionicons from "react-native-vector-icons/Feather";
 import AntIcons from "react-native-vector-icons/AntDesign";
@@ -27,7 +28,7 @@ export default function HomeScreen({ route }: any) {
   React.useEffect(() => {
     async function getData() {
       try {
-        const { data } = await axios.get(`https://4d60-108-50-188-138.ngrok.io/todo/${username}`);
+        const { data } = await axios.get(`${url}/todo/${username}`);
         console.log(data);
         setTodoData(data.items);
         setLoading(false);
@@ -52,7 +53,7 @@ export default function HomeScreen({ route }: any) {
       return todo;
     });
     try {
-      await axios.put(`https://4d60-108-50-188-138.ngrok.io/todo/${username}`, {
+      await axios.put(`${url}/todo/${username}`, {
         id: newTask.id,
         complete: newTask.complete,
         text: newTask.text,
@@ -72,7 +73,7 @@ export default function HomeScreen({ route }: any) {
             return todo.id !== id;
           });
           try {
-            await axios.delete(`https://4d60-108-50-188-138.ngrok.io/todo/${username}`, {
+            await axios.delete(`${url}/${username}`, {
               data: {
                 id,
               },

@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
+import url from "../serverURL";
 import EditProfileModal from "../components/EditProfileModal";
 import EditPasswordModal from "../components/EditPasswordModal";
 
@@ -22,7 +23,7 @@ export default function ProfileScreen({ navigation }: any) {
   React.useEffect(() => {
     async function getData() {
       try {
-        const { data } = await axios.get("https://4d60-108-50-188-138.ngrok.io/user/");
+        const { data } = await axios.get(`${url}/user/`);
         console.log(data);
         setUserData(data.data);
       } catch (error) {
@@ -34,7 +35,7 @@ export default function ProfileScreen({ navigation }: any) {
 
   const handleLogout = async () => {
     try {
-      await axios.get("https://4d60-108-50-188-138.ngrok.io/user/logout");
+      await axios.get(`${url}/user/logout`);
     } catch (error) {
       console.log(error);
     }

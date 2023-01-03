@@ -1,6 +1,7 @@
 import { View, TextInput, Modal, TouchableOpacity, Text } from "react-native";
 import React from "react";
 import axios from "axios";
+import url from "../serverURL";
 
 export default function TaskModal({ isModal, setIsModal, username, setTodoData }: any) {
   const [task, setTask] = React.useState("");
@@ -9,10 +10,10 @@ export default function TaskModal({ isModal, setIsModal, username, setTodoData }
   };
   const handleSubmit = async () => {
     try {
-      await axios.post(`https://4d60-108-50-188-138.ngrok.io/todo/${username}`, {
+      await axios.post(`${url}/todo/${username}`, {
         text: task,
       });
-      const { data } = await axios.get(`https://4d60-108-50-188-138.ngrok.io/todo/${username}`);
+      const { data } = await axios.get(`${url}/todo/${username}`);
       setTodoData(data.items);
       setIsModal(false);
       setTask("");

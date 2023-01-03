@@ -2,6 +2,7 @@ import { View, Text, TextInput, Modal, TouchableOpacity, Alert } from "react-nat
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
+import url from "../serverURL";
 
 export default function EditPasswordModal({ passwordModal, setPasswordModal, user }: any) {
   const [password, setPassword] = React.useState("");
@@ -17,7 +18,7 @@ export default function EditPasswordModal({ passwordModal, setPasswordModal, use
       return;
     }
     try {
-      await axios.put(`https://4d60-108-50-188-138.ngrok.io/user/edit/${user.username}`, {
+      await axios.put(`${url}/user/edit/${user.username}`, {
         password: password,
       });
       Alert.alert("Success", "Password updated", [{ text: "OK" }]);

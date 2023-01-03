@@ -2,6 +2,7 @@ import { View, Text, TextInput, Modal, TouchableOpacity, Alert } from "react-nat
 import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
+import url from "../serverURL";
 
 export default function EditProfileModal({ editModal, setEditModal, user, setUser }: any) {
   const [firstName, setFirstName] = React.useState(user.first_name);
@@ -26,7 +27,7 @@ export default function EditProfileModal({ editModal, setEditModal, user, setUse
     updatedUser.last_name = lastName;
     updatedUser.email = email;
     try {
-      await axios.put(`https://4d60-108-50-188-138.ngrok.io/user/edit/${user.username}`, {
+      await axios.put(`${url}/user/edit/${user.username}`, {
         first_name: firstName,
         last_name: lastName,
         email: email,

@@ -1,13 +1,14 @@
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import axios from "axios";
+import url from "../serverURL";
 
 export default function WelcomeScreen({ navigation }: any) {
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     async function getData() {
       try {
-        const { data } = await axios.get("https://4d60-108-50-188-138.ngrok.io/user/");
+        const { data } = await axios.get(`${url}/user/`);
         console.log(data);
         navigation.reset({
           index: 0,

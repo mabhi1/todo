@@ -3,6 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import axios from "axios";
+import url from "../serverURL";
 
 export default function LoginScreen({ navigation }: any) {
   const [username, setUsername] = React.useState("");
@@ -10,13 +11,13 @@ export default function LoginScreen({ navigation }: any) {
   const [processing, setProcessing] = React.useState(false);
 
   const handleSubmit = async () => {
-    setProcessing(true);
     if (!username || username.trim().length == 0 || !password || password.trim().length == 0) {
       Alert.alert("Message", "Please enter username and password to login", [{ text: "OK" }]);
       return;
     }
+    setProcessing(true);
     try {
-      const { data } = await axios.post("https://4d60-108-50-188-138.ngrok.io/user/login/", {
+      const { data } = await axios.post(`${url}/user/login/`, {
         username: username,
         password: password,
       });
@@ -67,8 +68,12 @@ export default function LoginScreen({ navigation }: any) {
           className="rounded border border-cyan-700 p-2 px-10 text-base shadow-sm shadow-cyan-100 bg-slate-50"
         />
       </View>
-      <TouchableOpacity className="px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500" disabled={processing} onPress={handleSubmit}>
-        <Text className="text-slate-50 text-base">Login</Text>
+      <TouchableOpacity
+        className={processing ? "px-8 py-2 bg-slate-600/70 rounded" : "px-8 py-2 bg-cyan-600/70 rounded shadow-xl shadow-cyan-500"}
+        disabled={processing}
+        onPress={handleSubmit}
+      >
+        <Text className="text-slate-50 text-base">{processing ? "Please Wait.." : "Login"}</Text>
       </TouchableOpacity>
       {/* <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
         <Text className="text-base">Don't have an account. Sign up here</Text>

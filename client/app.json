@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "client",
-    "slug": "client",
+    "name": "Todo app",
+    "slug": "todo-app",
+    "description": "This is a todo app built using react native and django",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
